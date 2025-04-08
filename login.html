@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Datacore Consultants</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="bg-white text-black min-h-screen flex items-center justify-center px-4 py-6">
+
+  <!-- Toast Container -->
+  <div id="toast"
+       class="fixed bottom-5 left-0 right-0 mx-auto sm:left-auto sm:right-5 sm:mx-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-aut">
+    ✅ Login successful! Redirecting...
+  </div>
+
+  <!-- Login Box -->
+  <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-6">
+    <h2 class="text-base sm:text-xl font-bold text-center">Login at Datacore Consultants</h2>
+
+    <form id="loginForm" class="space-y-4">
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Email</label>
+        <div class="relative">
+          <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+          <input type="email" id="email" maxlength="50" placeholder="Enter your email"
+                 class="pl-10 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" required />
+        </div>
+        <p id="emailError" class="text-sm text-red-500 mt-1 hidden">Please enter a valid email.</p>
+      </div>
+
+      <!-- Password with toggle -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Password</label>
+        <div class="relative">
+          <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+          <input type="password" id="password" placeholder="Enter your password"
+                 class="pl-10 pr-10 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" required />
+          <i data-lucide="eye" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 cursor-pointer"></i>
+        </div>
+        <p id="passwordError" class="text-sm text-red-500 mt-1 hidden">Incorrect password.</p>
+      </div>
+
+      <!-- Forgot Password -->
+      <div class="text-right">
+        <a href="forgot-password.html" class="text-sm text-gray-600 hover:underline">Forgot password?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit"
+              class="w-full bg-black text-white py-2 rounded-lg text-sm hover:bg-gray-800 transition">
+        Login
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-600">
+      Don't have an account?
+      <a href="register.html" class="text-black font-medium hover:underline">Register here</a>
+    </p>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const form = document.getElementById("loginForm");
+    const emailEl = document.getElementById("email");
+    const passwordEl = document.getElementById("password");
+    const toast = document.getElementById("toast");
+    const emailErr = document.getElementById("emailError");
+    const passErr = document.getElementById("passwordError");
+    const togglePassword = document.getElementById("togglePassword");
+
+    // Show/Hide password toggle
+    togglePassword.addEventListener("click", () => {
+      const type = passwordEl.type === "password" ? "text" : "password";
+      passwordEl.type = type;
+      togglePassword.setAttribute("data-lucide", type === "password" ? "eye" : "eye-off");
+      lucide.createIcons();
+    });
+
+    // Toast function
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.remove("hidden", "opacity-0");
+      toast.classList.add("opacity-100");
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0");
+        setTimeout(() => toast.classList.add("hidden"), 300);
+      }, 2000);
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      [emailErr, passErr].forEach(el => el.classList.add("hidden"));
+
+      const email = emailEl.value.trim();
+      const password = passwordEl.value.trim();
+      const storedEmail = localStorage.getItem("userEmail");
+      const storedPassword = localStorage.getItem("userPassword");
+
+      let valid = true;
+
+      if (!email || email !== storedEmail) {
+        emailErr.classList.remove("hidden");
+        valid = false;
+      }
+
+      if (!password || password !== storedPassword) {
+        passErr.classList.remove("hidden");
+        valid = false;
+      }
+
+      if (valid) {
+        showToast("✅ Login successful! Redirecting...");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Datacore Consultants</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="bg-white text-black min-h-screen flex items-center justify-center px-4">
+
+  <div class="my-6 sm:my-12 w-full max-w-md">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-md px-6 py-8 space-y-5">
+      <h2 class="text-base sm:text-xl font-bold text-center">Register at Datacore Consultants</h2>
+
+      <form id="registerForm" class="space-y-4">
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <div
+            class="flex items-center border border-gray-300 rounded-md px-3 py-2 bg-white focus-within:ring-2 focus-within:ring-black">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <input type="text" id="name" name="name" placeholder="Enter your name"
+              class="w-full outline-none text-sm text-gray-900 placeholder-gray-400" required />
+          </div>
+          <small id="nameError" class="text-red-500 text-xs hidden">Please enter your name.</small>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+            <input type="email" id="email" maxlength="50" placeholder="Enter your email"
+              class="pl-10 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
+          </div>
+          <p id="emailError" class="text-sm text-red-500 mt-1 hidden">Please enter a valid email (max 50 chars).</p>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+            <input type="password" id="password" placeholder="Create a password"
+              class="pl-10 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
+          </div>
+          <p id="passwordError" class="text-sm text-red-500 mt-1 hidden">Please enter a password.</p>
+          <div id="strengthBar" class="h-2 mt-2 rounded bg-gray-200 overflow-hidden">
+            <div id="strengthFill" class="h-full w-0 transition-all"></div>
+          </div>
+          <p id="strengthText" class="text-xs text-gray-600 mt-1"></p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Confirm Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password"
+              class="pl-10 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
+          </div>
+          <p id="confirmError" class="text-sm text-red-500 mt-1 hidden">Passwords do not match.</p>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+          class="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
+          Register
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-gray-600">
+        Already have an account?
+        <a href="login.html" class="text-black font-medium hover:underline">Login here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Toast (bottom-right dark) -->
+  <div id="toastSuccess"
+    class="fixed bottom-5 left-0 right-0 mx-auto sm:left-auto sm:right-5 sm:mx-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-aut">
+    ✅ Registered successfully! Redirecting to login...
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const form = document.getElementById('registerForm');
+    const nameEl = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const passwordEl = document.getElementById('password');
+    const confirmEl = document.getElementById('confirmPassword');
+
+    const nameErr = document.getElementById('nameError');
+    const emailErr = document.getElementById('emailError');
+    const passErr = document.getElementById('passwordError');
+    const confirmErr = document.getElementById('confirmError');
+
+    const strengthFill = document.getElementById("strengthFill");
+    const strengthText = document.getElementById("strengthText");
+    const toast = document.getElementById("toastSuccess");
+
+    passwordEl.addEventListener("input", function () {
+      const val = passwordEl.value;
+      let strength = 0;
+      if (val.length >= 8) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+      let width = "w-0", color = "bg-gray-300", text = "Too Weak";
+      if (strength >= 3) {
+        width = "w-full"; color = "bg-green-500"; text = "Strong";
+      }
+      else if (strength === 2) {
+        width = "w-2/4"; color = "bg-yellow-500"; text = "Medium";
+      } else if (strength === 1) {
+        width = "w-1/4"; color = "bg-red-500"; text = "Weak";
+      }
+
+      strengthFill.className = `h-full transition-all ${width} ${color}`;
+      strengthText.textContent = `Strength: ${text}`;
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      [nameErr, emailErr, passErr, confirmErr].forEach(el => el.classList.add('hidden'));
+
+      let valid = true;
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const password = passwordEl.value;
+      const confirm = confirmEl.value;
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (name === '') {
+        nameErr.classList.remove('hidden');
+        valid = false;
+      }
+
+      if (!emailPattern.test(email) || email.length > 50) {
+        emailErr.classList.remove('hidden');
+        valid = false;
+      }
+
+      if (password === '') {
+        passErr.classList.remove('hidden');
+        valid = false;
+      }
+
+      if (password !== confirm || confirm === '') {
+        confirmErr.classList.remove('hidden');
+        valid = false;
+      }
+
+      if (valid) {
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPassword", password);
+
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("opacity-100"), 50);
+
+        setTimeout(() => {
+          toast.classList.remove("opacity-100");
+          setTimeout(() => {
+            toast.classList.add("hidden");
+            window.location.href = "login.html";
+          }, 500);
+        }, 2000);
+      }
+    });
+  </script>
+</body>
+
+</html>

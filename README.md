@@ -45,5 +45,8 @@ A modern, responsive authentication UI built with **HTML**, **Tailwind CSS**, an
 
 ---
 
-## 📁 File Structure
+## 🔗 Live Demo
+
+Check out the live demo here:  
+👉 [Datacore Auth UI Demo](https://ankitdubey1902.github.io/DatacoreDesign/login.html)
 

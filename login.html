@@ -39,7 +39,9 @@
           <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
           <input type="password" id="password" placeholder="Enter your password"
                  class="pl-10 pr-10 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" required />
-          <i data-lucide="eye" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 cursor-pointer"></i>
+                 <span id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+                  <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
+                </span>                
         </div>
         <p id="passwordError" class="text-sm text-red-500 mt-1 hidden">Incorrect password.</p>
       </div>
@@ -84,11 +86,13 @@
 
     // Show/Hide password toggle
     togglePassword.addEventListener("click", () => {
-      const type = passwordEl.type === "password" ? "text" : "password";
-      passwordEl.type = type;
-      togglePassword.setAttribute("data-lucide", type === "password" ? "eye" : "eye-off");
-      lucide.createIcons();
-    });
+  const type = passwordEl.type === "password" ? "text" : "password";
+  passwordEl.type = type;
+
+  // Replace inner HTML of the togglePassword span
+  togglePassword.innerHTML = `<i data-lucide="${type === "password" ? "eye" : "eye-off"}" class="w-4 h-4 text-gray-500"></i>`;
+  lucide.createIcons(); // Re-render the new icon inside
+});
 
     // Toast function
     function showToast(message) {

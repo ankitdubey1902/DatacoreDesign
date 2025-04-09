@@ -84,10 +84,12 @@
   </div>
 
   <!-- Toast (bottom-right dark) -->
-  <div id="toastSuccess"
-    class="fixed bottom-5 left-0 right-0 mx-auto sm:left-auto sm:right-5 sm:mx-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-aut">
-    ✅ Registered successfully! Redirecting to login...
-  </div>
+  <!-- Toast Container -->
+<div id="toast"
+class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-auto">
+✅ Registration successful! Redirecting...
+</div>
+
 
   <script>
     lucide.createIcons();
@@ -105,7 +107,7 @@
 
     const strengthFill = document.getElementById("strengthFill");
     const strengthText = document.getElementById("strengthText");
-    const toast = document.getElementById("toastSuccess");
+    const toast = document.getElementById("toast");
 
     passwordEl.addEventListener("input", function () {
       const val = passwordEl.value;

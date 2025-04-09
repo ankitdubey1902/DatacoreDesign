@@ -19,7 +19,7 @@
         <!-- Name -->
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-          <div
+          <div id="nameWrapper"
             class="flex items-center border border-gray-300 rounded-md px-3 py-2 bg-white focus-within:ring-2 focus-within:ring-black">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +27,7 @@
                 d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <input type="text" id="name" name="name" placeholder="Enter your name"
-              class="w-full outline-none text-sm text-gray-900 placeholder-gray-400" required />
+              class="w-full outline-none text-sm text-gray-900 placeholder-gray-400" />
           </div>
           <small id="nameError" class="text-red-500 text-xs hidden">Please enter your name.</small>
         </div>
@@ -83,14 +83,13 @@
     </div>
   </div>
 
-  <!-- Toast (bottom-right dark) -->
-  <!-- Toast Container -->
-<div id="toast"
-class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-auto">
-✅ Registration successful! Redirecting...
-</div>
+  <!-- Toast -->
+  <div id="toast"
+    class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0 bg-gray-900 text-white px-4 py-2 rounded shadow-md text-sm hidden opacity-0 transition-opacity duration-500 w-[90%] sm:w-auto">
+    ✅ Registration successful! Redirecting...
+  </div>
 
-
+  <!-- Script -->
   <script>
     lucide.createIcons();
 
@@ -108,6 +107,7 @@ class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-
     const strengthFill = document.getElementById("strengthFill");
     const strengthText = document.getElementById("strengthText");
     const toast = document.getElementById("toast");
+    const nameWrapper = document.getElementById('nameWrapper');
 
     passwordEl.addEventListener("input", function () {
       const val = passwordEl.value;
@@ -134,7 +134,10 @@ class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
+      // Reset error states
       [nameErr, emailErr, passErr, confirmErr].forEach(el => el.classList.add('hidden'));
+      [emailEl, passwordEl, confirmEl].forEach(el => el.classList.remove('border-red-500'));
+      nameWrapper.classList.remove('border-red-500');
 
       let valid = true;
       const name = nameEl.value.trim();
@@ -146,21 +149,25 @@ class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-
 
       if (name === '') {
         nameErr.classList.remove('hidden');
+        nameWrapper.classList.add('border-red-500');
         valid = false;
       }
 
       if (!emailPattern.test(email) || email.length > 50) {
         emailErr.classList.remove('hidden');
+        emailEl.classList.add('border-red-500');
         valid = false;
       }
 
       if (password === '') {
         passErr.classList.remove('hidden');
+        passwordEl.classList.add('border-red-500');
         valid = false;
       }
 
       if (password !== confirm || confirm === '') {
         confirmErr.classList.remove('hidden');
+        confirmEl.classList.add('border-red-500');
         valid = false;
       }
 
@@ -182,6 +189,7 @@ class="fixed bottom-5 left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-
       }
     });
   </script>
+
 </body>
 
 </html>
